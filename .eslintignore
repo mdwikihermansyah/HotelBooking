@@ -4,4 +4,11 @@ node_modules/
 .next/
 out/
 build/
-dist/ 
+dist/
+*.js
+*.mjs
+
+# Prisma generated files
+app/generated/prisma/
+**/prisma/generated/
+**/generated/prisma/ 
