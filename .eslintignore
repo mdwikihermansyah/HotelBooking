@@ -11,4 +11,9 @@ dist/
 # Prisma generated files
 app/generated/prisma/
 **/prisma/generated/
-**/generated/prisma/ 
+**/generated/prisma/
+
+# Ignore all generated Prisma files
+app/generated/prisma/**/*
+**/prisma/generated/**/*
+**/generated/prisma/**/* 
