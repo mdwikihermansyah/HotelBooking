@@ -3,6 +3,7 @@ import { Raleway } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer";
+import AuthProvider from "@/components/providers/session-provider";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${raleway.variable} antialiased`}>
-        <Navbar />
-        <main className="bg-gray-50 min-h-screen">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          <main className="bg-gray-50 min-h-screen">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

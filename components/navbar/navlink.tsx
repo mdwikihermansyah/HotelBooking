@@ -1,12 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoClose, IoMenu } from "react-icons/io5";
 import clsx from "clsx";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-export const NavLink = () => {
+/**
+ * * Komponen NavLink dengan penambahan highlight warna orange pada link aktif.
+ */
+const NavLink = () => {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // * Daftar link navigasi utama
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/rooms", label: "Rooms" },
+    { href: "/contact", label: "Contact" },
+    { href: "/my-reservation", label: "My Reservation" },
+    { href: "/admin-dashboard", label: "Admin Dashboard" },
+    { href: "/manage-rooms", label: "Manage Rooms" },
+  ];
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>
@@ -26,79 +51,35 @@ export const NavLink = () => {
           className="flex flex-col font-semibold text-sm uppercase p-4 mt-4 rounded-sm 
         bg-gray-50 md:flex-row md:items-center md:space-x-10 md:p-0 md:mt-0 md:bg-white"
         >
-          <li>
-            <Link
-              href="/"
-              className="block py-2 px-3 text-gray-800 hover:bg-gray-100
-                rounded-sm md:hover:bg-transparent md:p-0"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/about"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-                hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-                md:hover:bg-transparent group"
-            >
-              About
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/rooms"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-              hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-              md:hover:bg-transparent group"
-            >
-              Rooms
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/contact"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-              hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-              md:hover:bg-transparent group"
-            >
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/my-reservation"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-              hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-              md:hover:bg-transparent group"
-            >
-              My Reservation
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/admin-dashboard"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-              hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-              md:hover:bg-transparent group"
-            >
-              Admin Dashboard
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/manage-rooms"
-              className="block py-2 px-3 text-gray-800 rounded-sm md:p-0 relative transition-colors duration-300
-              hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200
-              md:hover:bg-transparent group"
-            >
-              Manage Rooms
-            </Link>
-          </li>
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className={clsx(
+                  "block py-2 px-3 rounded-sm md:p-0 relative transition-colors duration-300",
+                  "text-gray-800 hover:text-gray-900 hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200 md:hover:bg-transparent group",
+                  {
+                    // * Aktifkan warna orange jika path cocok
+                    "bg-orange-500 text-white md:bg-transparent md:text-orange-500":
+                      pathname === link.href,
+                  }
+                )}
+                aria-current={pathname === link.href ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
           <li className="pt-2 md:pt-0">
             <Link
               href="/signin"
-              className="py-2.5 px-6 bg-orange-500 text-white hover:bg-orange-600 rounded-sm"
+              className={clsx(
+                "py-2.5 px-6 rounded-sm",
+                pathname === "/signin"
+                  ? "bg-orange-500 text-white"
+                  : "bg-orange-500 text-white hover:bg-orange-600"
+              )}
+              aria-current={pathname === "/signin" ? "page" : undefined}
             >
               Sign In
             </Link>
@@ -108,3 +89,5 @@ export const NavLink = () => {
     </>
   );
 };
+
+export default NavLink;
