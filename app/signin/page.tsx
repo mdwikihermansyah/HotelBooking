@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { LoginGoogleButton } from "@/components/login-button";
+import { LoginGoogleButton } from "../../components/login-button";
 import Link from "next/link";
 
 export const metadata: Metadata = {
