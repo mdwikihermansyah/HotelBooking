@@ -78,6 +78,7 @@ model User {
   role          String    @default("user")
   phone         String?
   accounts      Account[]
+  sessions      Session[]
   // Optional for WebAuthn support
 
   createdAt    DateTime      @default(now())
@@ -104,4 +105,20 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@id([identifier, token])
 }
